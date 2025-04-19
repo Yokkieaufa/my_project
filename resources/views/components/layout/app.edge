@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>{{ title }}</title>
+  </head>
+  <body class="bg-gradient-to-b from-green-50 via-blue-50 to-purple-50 min-h-screen text-gray-800">
+
+    <!-- Header -->
+    <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white/90 backdrop-blur shadow-md text-sm py-3">
+      <nav class="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between">
+        <a class="flex-none font-semibold text-xl text-purple-800 hover:opacity-80 transition duration-150" href="/" aria-label="Brand">🌿 Bucket bunga</a>
+
+        <div class="flex flex-row items-center gap-5 mt-5 sm:justify-end sm:mt-0 sm:ps-5">
+          @eval(await auth.check())
+
+          @if(auth.isAuthenticated)
+            <div class="font-semibold text-gray-700">{{ auth.user.name }}</div>
+
+            <form action="/logout?_method=DELETE" method="post">
+              {{ csrfField() }}
+              <button class="text-gray-600 font-medium hover:text-red-500 transition duration-150">Log out</button>
+            </form>
+
+          @else
+            <a href="/login" class="text-gray-600 font-medium hover:text-blue-500 transition duration-150">Log in</a>
+            <a href="/register" class="text-gray-600 font-medium hover:text-green-600 transition duration-150">Register</a>
+          @end
+        </div>
+      </nav>
+    </header>
+
+    <!-- Section: Daftar Postingan -->
+    <section class="text-center mt-10 mb-6">
+      <h1 class="text-3xl font-bold text-purple-700">📚 Daftar Postingan</h1>
+      <p class="text-gray-600">Berikut beberapa artikel menarik untuk kamu baca.</p>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-4 space-y-8">
+      <!-- Gambar artikel pertama -->
+      <article class="rounded-lg overflow-hidden shadow-md">
+        <img src="/image/bucket bunga.jpg" alt="Merawat Bunga" class="w-80 h-80 object-cover">
+      </article>
+
+      <!-- Artikel kedua -->
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold text-purple-800">Bunga Favorit untuk Hari Ibu</h2>
+        <p class="text-gray-600 mt-2">Rekomendasi buket terbaik untuk hari spesial ibu tercinta.</p>
+        <a href="/posts/2" class="text-blue-500 hover:text-blue-700 inline-block mt-2">Baca Selengkapnya →</a>
+      </article>
+    </section>
+
+    <!-- Slot konten dinamis -->
+    <main class="grow py-10">
+      {{{ await $slots.main() }}}
+    </main>
+
+  </body>
+</html>
